@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 public class Code02_FreedomTrail {
 
-	
-	// 
 	public static int dial(int i1, int i2, int size) {
 		return Math.min(Math.abs(i1 - i2), Math.min(i1, i2) + size - Math.max(i1, i2));
 	}
