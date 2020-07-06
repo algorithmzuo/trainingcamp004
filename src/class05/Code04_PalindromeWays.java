@@ -1,6 +1,6 @@
 package class05;
 
-public class Code05_PalindromeWays {
+public class Code04_PalindromeWays {
 
 	public static int way1(String str) {
 		char[] s = str.toCharArray();
