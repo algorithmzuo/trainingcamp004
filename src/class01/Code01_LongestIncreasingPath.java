@@ -13,28 +13,28 @@ public class Code01_LongestIncreasingPath {
 		return ans;
 	}
 	
-	// 假设在matrix中，从i行，j列出发，能走出的最长递增路径，返回
+	// 假设在matrix中，从i行，j列出发，能走出的最长递增路径，返回最长递增路径的长度
 	public static int process(int[][] matrix, int i, int j) {
 		if(i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length) {
 			return -1;
 		}
-		int next1 = 0 ;
-		int next2 = 0 ;
-		int next3 = 0 ;
-		int next4 = 0 ;
+		int up = 0 ;
+		int down = 0 ;
+		int left = 0 ;
+		int right = 0 ;
 		if(i-1 >=0 && matrix[i-1][j] > matrix[i][j]) {
-			next1 = process(matrix, i-1, j);
+			up = process(matrix, i-1, j);
 		}
 		if(i+1 < matrix.length && matrix[i+1][j] > matrix[i][j]) {	
-			next2 = process(matrix, i+1, j);
+			down = process(matrix, i+1, j);
 		}
 		if(j-1 >=0 && matrix[i][j-1] > matrix[i][j]) {
-			next3 = process(matrix, i, j-1);
+			left = process(matrix, i, j-1);
 		}
 		if(j+1 < matrix[0].length && matrix[i][j+1] > matrix[i][j]) {
-			next4 = process(matrix, i-1, j);
+			right = process(matrix, i-1, j);
 		}
-		return 1 + Math.max(Math.max(next1, next2), Math.max(next3, next4));
+		return 1 + Math.max(Math.max(up, down), Math.max(left, right));
 	}
 	
 	
@@ -60,6 +60,8 @@ public class Code01_LongestIncreasingPath {
 	}
 	
 	// 假设在matrix中，从i行，j列出发，能走出的最长递增路径，返回
+	// dp[i][j]   == 0   process(i,j) 之前没遇到过
+	// dp[i][j]   != 0   process(i,j) 之前已经算过了
 	public static int process(int[][] matrix, int i, int j, int[][] dp) {
 		if(i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length) {
 			return -1;
@@ -83,7 +85,6 @@ public class Code01_LongestIncreasingPath {
 		if(j+1 < matrix[0].length && matrix[i][j+1] > matrix[i][j]) {
 			next4 = process(matrix, i-1, j);
 		}
-		
 		int ans = 1 + Math.max(Math.max(next1, next2), Math.max(next3, next4));
 		dp[i][j] = ans;
 		return ans;

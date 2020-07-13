@@ -20,10 +20,11 @@ public class Code04_WordSearch {
 
 	}
 
-	public static void fillWord(TrieNode node, String word) {
-		node.pass++;
+	public static void fillWord(TrieNode head, String word) {
+		head.pass++;
 		char[] chs = word.toCharArray();
 		int index = 0;
+		TrieNode node = head;
 		for (int i = 0; i < chs.length; i++) {
 			index = chs[i] - 'a';
 			if (node.nexts[index] == null) {
@@ -54,17 +55,17 @@ public class Code04_WordSearch {
 			}
 		}
 		// 答案
-		List<String> res = new ArrayList<>();
+		List<String> ans = new ArrayList<>();
 		// 沿途走过的字符，收集起来，存在path里
 		LinkedList<Character> path = new LinkedList<>();
 		for (int row = 0; row < board.length; row++) {
 			for (int col = 0; col < board[0].length; col++) {
 				// 枚举在board中的所有位置
 				// 每一个位置出发的情况下，答案都收集
-				process(board, row, col, path, head, res);
+				process(board, row, col, path, head, ans);
 			}
 		}
-		return res;
+		return ans;
 	}
 
 	// 从board[row][col]位置的字符出发，
@@ -72,7 +73,8 @@ public class Code04_WordSearch {
 	// cur还没有登上，有待检查能不能登上去的前缀树的节点
 	// 如果找到words中的某个str，就记录在 res里
 	// 返回值，从row,col 出发，一共找到了多少个str
-	public static int process(char[][] board, 
+	public static int process(
+			char[][] board, 
 			int row, int col,
 			LinkedList<Character> path,
 			TrieNode cur, 
@@ -81,7 +83,7 @@ public class Code04_WordSearch {
 		if (cha == 0) { // 这个row col位置是之前走过的位置
 			return 0;
 		}
-		// (row,col) 不是回头路
+		// (row,col) 不是回头路   cha 有效
 		
 		int index = cha - 'a';
 		// 如果没路，或者这条路上最终的字符串之前加入过结果里

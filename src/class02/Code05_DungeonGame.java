@@ -2,6 +2,45 @@ package class02;
 
 public class Code05_DungeonGame {
 
+	public static int needMin(int[][] matrix) {
+		return process(matrix, matrix.length, matrix[0].length, 0, 0);
+	}
+
+	// 来到了matrix[row][col]，还没登上去，到达右下角，返回至少的初始血量
+	public static int process(int[][] matrix, int N, int M, int row, int col) {
+		if(row == N - 1 && col == M - 1) { // 已经达到右下角了
+			return matrix[N-1][M-1] < 0 ? (-matrix[N-1][M-1] + 1) : 1;
+		}
+		if(row == N - 1) {
+			int rightNeed = process(matrix, N, M, row, col+1);
+			if(matrix[row][col] < 0) { // 3    -7    10
+				return -matrix[row][col] + rightNeed;
+			}else if(matrix[row][col] >= rightNeed) {  // 3    3    1
+				return 1;
+			}else { //  3   1    2
+				return rightNeed - matrix[row][col];
+			}
+		}
+		if(col == M - 1) {
+			int downNeed = process(matrix, N, M, row+1, col);
+			if(matrix[row][col] < 0) { // 3    -7    10
+				return -matrix[row][col] + downNeed;
+			}else if(matrix[row][col] >= downNeed) {  // 3    3    1
+				return 1;
+			}else { //  3   1    2
+				return downNeed - matrix[row][col];
+			}
+		}
+		int minNextNeed = Math.min(process(matrix, N, M, row, col+1), process(matrix, N, M, row+1, col));
+		if(matrix[row][col] < 0) { // 3    -7    10
+			return -matrix[row][col] + minNextNeed;
+		}else if(matrix[row][col] >= minNextNeed) {  // 3    3    1
+			return 1;
+		}else { //  3   1    2
+			return minNextNeed - matrix[row][col];
+		}
+	}
+
 	public static int minHP1(int[][] m) {
 		if (m == null || m.length == 0 || m[0] == null || m[0].length == 0) {
 			return 1;
