@@ -13,6 +13,51 @@ import java.util.PriorityQueue;
 // 四个参数：arr, n, a, b
 // 假设时间点从0开始，返回所有人喝完咖啡并洗完咖啡杯的全部过程结束后，至少来到什么时间点。
 public class Code06_Coffee {
+	
+	
+	public static class CoffeeMachine{
+		public int start;
+		public int work;
+		
+		public CoffeeMachine(int s, int w) {
+			start = s;
+			work = w;
+		}
+	}
+	
+	public static class CoffeeMachineComparator implements Comparator<CoffeeMachine>{
+
+		@Override
+		public int compare(CoffeeMachine o1, CoffeeMachine o2) {
+			return o1.start + o1.work - o2.start - o2.work;
+		}
+		
+	}
+	
+	
+	
+	
+	public static int[] bestChoices(int[] arr, int M) {
+		int[] ans = new int[M];
+		PriorityQueue<CoffeeMachine> heap = new PriorityQueue<>(new CoffeeMachineComparator());
+		for(int coffeWork : arr) {
+			heap.add(new CoffeeMachine(0, coffeWork));
+		}
+		for(int i = 0; i< M; i++) {
+			CoffeeMachine cur = heap.poll();
+			ans[i] = cur.start + cur.work;
+			cur.start = ans[i];
+			heap.add(cur);
+		}
+		return ans;
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	// 方法一：暴力尝试方法
 	public static int minTime1(int[] arr, int n, int a, int b) {

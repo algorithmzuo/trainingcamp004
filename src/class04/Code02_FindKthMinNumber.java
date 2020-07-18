@@ -27,31 +27,51 @@ public class Code02_FindKthMinNumber {
 			}
 			return getUpMedian(shorts, kth - l, s - 1, longs, kth - s, l - 1);
 		}
+		// 短数组长度 < k <= 长数组长度
 		if (longs[kth - s - 1] >= shorts[s - 1]) {
 			return longs[kth - s - 1];
 		}
 		return getUpMedian(shorts, 0, s - 1, longs, kth - s, kth - 1);
 	}
 
-	public static int getUpMedian(int[] a1, int s1, int e1, int[] a2, int s2, int e2) {
+	// A[s1...e1]
+	// B[s2...e2]
+	// 这两段一定等长且都有序
+	// 求这两段整体的上中位数，上中位数值返回
+	public static int getUpMedian(int[] A, int s1, int e1, int[] B, int s2, int e2) {
 		int mid1 = 0;
 		int mid2 = 0;
-		int offset = 0;
 		while (s1 < e1) {
 			mid1 = (s1 + e1) / 2;
 			mid2 = (s2 + e2) / 2;
-			offset = ((e1 - s1 + 1) & 1) ^ 1;
-			if (a1[mid1] > a2[mid2]) {
-				e1 = mid1;
-				s2 = mid2 + offset;
-			} else if (a1[mid1] < a2[mid2]) {
-				s1 = mid1 + offset;
-				e2 = mid2;
-			} else {
-				return a1[mid1];
+			if (A[mid1] == B[mid2]) {
+				return A[mid1];
+			}
+			if (((e1 - s1 + 1) & 1) == 1) { // 奇数长度
+				if (A[mid1] > B[mid2]) {
+					if (B[mid2] >= A[mid1 - 1]) {
+						return B[mid2];
+					}
+					e1 = mid1 - 1;
+					s2 = mid2 + 1;
+				} else { // A[mid1] < B[mid2]
+					if (A[mid1] >= B[mid2 - 1]) {
+						return A[mid1];
+					}
+					e2 = mid2 - 1;
+					s1 = mid1 + 1;
+				}
+			} else { // 偶数长度
+				if (A[mid1] > B[mid2]) {
+					e1 = mid1;
+					s2 = mid2 + 1;
+				} else {
+					e2 = mid2;
+					s1 = mid1 + 1;
+				}
 			}
 		}
-		return Math.min(a1[s1], a2[s2]);
+		return Math.min(A[s1], B[s2]);
 	}
 
 	// For test, this method is inefficient but absolutely right

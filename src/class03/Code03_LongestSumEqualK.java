@@ -14,10 +14,13 @@ public class Code03_LongestSumEqualK {
 		}
 	}
 
-	public static int ans = 0;
+	public static int ans = 0; // 收集累加和为K的，最长路径有多少个节点
 
 	public static int longest(Node head, int K) {
 		ans = 0;
+		// key ： 前缀和
+		// value : 该前缀和，最早出现在哪一层
+		// sumMap：只维持，从头节点出发到当前节点，这条路径上的前缀和
 		HashMap<Integer, Integer> sumMap = new HashMap<>();
 		sumMap.put(0, -1);
 		process(head, 0, 0, K, sumMap);
@@ -30,6 +33,7 @@ public class Code03_LongestSumEqualK {
 	// 并看看能不能更新全局的ans
 	public static void process(Node X, int level, int preSum, int K, HashMap<Integer, Integer> sumMap) {
 		if (X != null) {
+			// 从头节点出发，到当前X节点，总的前缀和是多少，allSum
 			int allSum = preSum + X.value;
 			if (sumMap.containsKey(allSum - K)) {
 				ans = Math.max(ans, level - sumMap.get(allSum - K));

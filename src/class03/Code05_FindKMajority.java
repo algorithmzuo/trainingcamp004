@@ -9,24 +9,28 @@ public class Code05_FindKMajority {
 
 	public static void printHalfMajor(int[] arr) {
 		int cand = 0;
-		int times = 0;
-		for (int i = 0; i != arr.length; i++) {
-			if (times == 0) {
+		int HP = 0;
+		for (int i = 0; i < arr.length; i++) {
+			if (HP == 0) {
 				cand = arr[i];
-				times = 1;
+				HP = 1;
 			} else if (arr[i] == cand) {
-				times++;
+				HP++;
 			} else {
-				times--;
+				HP--;
 			}
 		}
-		times = 0;
-		for (int i = 0; i != arr.length; i++) {
+		if(HP == 0) {
+			System.out.println("no such number.");
+			return;
+		}
+		HP = 0;
+		for (int i = 0; i < arr.length; i++) {
 			if (arr[i] == cand) {
-				times++;
+				HP++;
 			}
 		}
-		if (times > arr.length / 2) {
+		if (HP > arr.length / 2) {
 			System.out.println(cand);
 		} else {
 			System.out.println("no such number.");

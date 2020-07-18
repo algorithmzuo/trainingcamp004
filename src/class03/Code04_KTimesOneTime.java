@@ -5,6 +5,7 @@ public class Code04_KTimesOneTime {
 	public static int onceNum(int[] arr, int k) {
 		int[] eO = new int[32];
 		for (int i = 0; i != arr.length; i++) {
+			// 当前数是arr[i], 请把arr[i]变成K进制的形式，每一位累加到eO
 			setExclusiveOr(eO, arr[i], k);
 		}
 		int res = getNumFromKSysNum(eO, k);
