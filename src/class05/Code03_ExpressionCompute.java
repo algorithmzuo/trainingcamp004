@@ -14,23 +14,23 @@ public class Code03_ExpressionCompute {
 	// 1) 负责的这一段计算到了哪个位置
 	public static int[] value(char[] str, int i) {
 		LinkedList<String> que = new LinkedList<String>();
-		int num = 0;
+		int cur = 0;
 		int[] bra = null;
 		// 从i出发，开始撸串
 		while (i < str.length && str[i] != ')') {
 			if (str[i] >= '0' && str[i] <= '9') {
-				num = num * 10 + str[i++] - '0';
+				cur = cur * 10 + str[i++] - '0';
 			} else if (str[i] != '(') { // 遇到的是运算符号
-				addNum(que, num);
+				addNum(que, cur);
 				que.addLast(String.valueOf(str[i++]));
-				num = 0;
+				cur = 0;
 			} else { // 遇到左括号了
 				bra = value(str, i + 1);
-				num = bra[0];
+				cur = bra[0];
 				i = bra[1] + 1;
 			}
 		}
-		addNum(que, num);
+		addNum(que, cur);
 		return new int[] { getNum(que), i };
 	}
 

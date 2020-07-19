@@ -16,17 +16,23 @@ public class Code02_SnakeGame {
 		return res;
 	}
 
-	// 从左侧到达(i,j)的旅程中
-	// 0) 在没有使用过能力的情况下，返回路径最大和
-	// 1) 在使用过能力的情况下，返回路径最大和
+	// 从假想的最优左侧到达(i,j)的旅程中
+	// 0) 在没有使用过能力的情况下，返回路径最大和，没有可能到达的话，返回负
+	// 1) 在使用过能力的情况下，返回路径最大和，没有可能到达的话，返回负
 	public static int[] process(int[][] m, int i, int j) {
+		
 		if (j == 0) { // (i,j)就是最左侧的位置
 			return new int[] { m[i][j], -m[i][j] };
 		}
-		// (i,j)的左侧有之前的路
-		// 第一条路
+		// j > 0, 
+		// 来到(i,j)位置，一定有之前的路
+		
+
+		// 第一条路   i , j (j > 0)   i,j-1
 		int[] preAns = process(m, i, j - 1);
+		// 所有的路中，完全不使用能力的情况下，能够到达的最好长度是多大
 		int preUnuse = preAns[0];
+		// 所有的路中，使用过一次能力的情况下，能够到达的最好长度是多大
 		int preUse = preAns[1];
 		if (i - 1 >= 0) {
 			preAns = process(m, i - 1, j - 1);

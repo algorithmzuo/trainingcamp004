@@ -7,43 +7,44 @@ public class Code05_MinBoat {
 		if (arr == null || arr.length == 0) {
 			return 0;
 		}
+		int N = arr.length;
 		// Arrays.sort(arr);
-		if(arr[arr.length - 1] > limit) {
+		if(arr[N - 1] > limit) {
 			return -1;
 		}
 		int lessR = -1;
-		// 所有的人体重都不超过limit，继续讨论
-		for (int i = arr.length - 1; i >= 0; i--) {
+		// 所有的人体重都不超过limit，继续讨论,  <= limit / 2  最右的位置
+		for (int i = N  - 1; i >= 0; i--) {
 			if (arr[i] <= (limit / 2)) {
 				lessR = i;
 				break;
 			}
 		}
 		if (lessR == -1) {
-			return arr.length;
+			return N;
 		}
-		// 一定有左右两个部分，左(<= limit / 2) 右(> limit / 2)
+		//  <= limit / 2
 		int L = lessR;
 		int R = lessR + 1;
-		int lessUnused = 0; // 画X的数量统计，画对号的量(加工出来的)
+		int noUsed = 0; // 画X的数量统计，画对号的量(加工出来的)
 		while (L >= 0) {
 			int solved = 0; // 此时的[L]，让R画过了几个数
-			while (R < arr.length && arr[L] + arr[R] <= limit) {
+			while (R < N && arr[L] + arr[R] <= limit) {
 				R++;
 				solved++;
 			}
-			// R来到的位置是第一个开始又不达标的位置
+			// R来到又不达标的位置
 			if (solved == 0) {
-				lessUnused++;
+				noUsed++;
 				L--;
 			} else { // 此时的[L]，让R画过了solved（>0）个数
 				L = Math.max(-1, L - solved);
 			}
 		}
-		int lessAll = lessR + 1;// 左半区总个数  <= limit /2 的区域
-		int lessUsed = lessAll - lessUnused; // 画对号的量
-		int moreUnsolved = arr.length - lessR - 1 - lessUsed; // > limit/2 区中，没搞定的数量
-		return lessUsed + ((lessUnused + 1) >> 1) + moreUnsolved;
+		int all = lessR + 1;// 左半区总个数  <= limit /2 的区域
+		int used = all - noUsed; // 画对号的量
+		int moreUnsolved = (N - all) - used; // > limit/2 区中，没搞定的数量
+		return used + ((noUsed + 1) >> 1) + moreUnsolved;
 	}
 
 	public static void main(String[] args) {
