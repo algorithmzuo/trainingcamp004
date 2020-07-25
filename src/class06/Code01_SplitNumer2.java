@@ -1,7 +1,7 @@
 package class06;
 
 public class Code01_SplitNumer2 {
-
+	
 	public static int ways1(int n) {
 		if (n < 1) {
 			return 0;
@@ -26,6 +26,36 @@ public class Code01_SplitNumer2 {
 		}
 		return ways;
 	}
+	
+	public static int ways1dp(int n) {
+		if (n < 1) {
+			return 0;
+		}
+		// pre -> 0  ~ n  (0不用)
+		// rest -> 0 ~ n
+		int[][] dp = new int[n+1][n+1];
+		// dp[0][...]不需要填
+		for(int pre = 1; pre <= n; pre++) {
+			dp[pre][0] = 1;
+		}
+		for(int pre = n; pre >= 1; pre--) {
+			for(int rest = pre; rest <= n; rest++) {
+				// dp[pre][rest]
+				int ways = 0;
+				for (int i = pre; i <= rest; i++) { // i : rest第一个裂开的部分，值是多少
+					ways += dp[i] [rest - i];
+				}
+				dp[pre][rest] = ways;
+			}
+		}
+		return dp[1][n];
+	}
+	
+	
+	
+	
+	
+	
 
 	public static int ways2(int n) {
 		if (n < 1) {
@@ -65,8 +95,9 @@ public class Code01_SplitNumer2 {
 	}
 
 	public static void main(String[] args) {
-		int n = 4;
+		int n = 20;
 		System.out.println(ways1(n));
+		System.out.println(ways1dp(n));
 		System.out.println(ways2(n));
 		System.out.println(ways3(n));
 	}
