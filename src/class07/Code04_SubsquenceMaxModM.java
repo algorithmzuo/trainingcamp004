@@ -67,12 +67,13 @@ public class Code04_SubsquenceMaxModM {
 		dp[0][arr[0] % m] = true;
 		for (int i = 1; i < N; i++) {
 			for (int j = 1; j < m; j++) {
+				// dp[i][j]  T or F
 				dp[i][j] = dp[i - 1][j];
 				int cur = arr[i] % m;
 				if (j - cur >= 0) {
 					dp[i][j] = dp[i][j] | dp[i - 1][j - cur];
 				}
-				if (m + j - cur < m) {
+				if (j - cur < 0) {
 					dp[i][j] = dp[i][j] | dp[i - 1][m + j - cur];
 				}
 			}
@@ -98,12 +99,13 @@ public class Code04_SubsquenceMaxModM {
 		TreeSet<Integer> sortSet2 = new TreeSet<>();
 		process4(arr, mid + 1, 0, arr.length - 1, m, sortSet2);
 		int ans = 0;
-		for (Integer left : sortSet1) {
-			ans = Math.max(ans, left + sortSet2.floor(m - 1 - left));
+		for (Integer leftMod : sortSet1) {
+			ans = Math.max(ans, leftMod + sortSet2.floor(m - 1 - leftMod));
 		}
 		return ans;
 	}
 
+	// 从index出发，最后有边界是end+1，arr[index...end]
 	public static void process4(int[] arr, int index, int sum, int end, int m, TreeSet<Integer> sortSet) {
 		if (index == end + 1) {
 			sortSet.add(sum % m);

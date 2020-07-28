@@ -21,17 +21,17 @@ public class Code03_VisibleMountains {
 		if (arr == null || arr.length < 2) {
 			return 0;
 		}
-		int size = arr.length;
+		int N = arr.length;
 		int maxIndex = 0;
 		// 先在环中找到其中一个最大值的位置，哪一个都行
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < N; i++) {
 			maxIndex = arr[maxIndex] < arr[i] ? i : maxIndex;
 		}
 		Stack<Record> stack = new Stack<Record>();
 		// 先把(最大值,1)这个记录放入stack中
 		stack.push(new Record(arr[maxIndex]));
 		// 从最大值位置的下一个位置开始沿next方向遍历
-		int index = nextIndex(maxIndex, size);
+		int index = nextIndex(maxIndex, N);
 		// 用“小找大”的方式统计所有可见山峰对
 		int res = 0;
 		// 遍历阶段开始，当index再次回到maxIndex的时候，说明转了一圈，遍历阶段就结束
@@ -50,7 +50,7 @@ public class Code03_VisibleMountains {
 			} else { // >
 				stack.push(new Record(arr[index]));
 			}
-			index = nextIndex(index, size);
+			index = nextIndex(index, N);
 		}
 		// 清算阶段开始了
 		// 清算阶段的第1小阶段
@@ -178,6 +178,7 @@ public class Code03_VisibleMountains {
 		int size = 10;
 		int max = 10;
 		int testTimes = 3000000;
+		System.out.println("test begin!");
 		for (int i = 0; i < testTimes; i++) {
 			int[] arr = getRandomArray(size, max);
 			if (rightWay(arr) != getVisibleNum(arr)) {
@@ -187,6 +188,7 @@ public class Code03_VisibleMountains {
 				break;
 			}
 		}
+		System.out.println("test end!");
 	}
 
 }

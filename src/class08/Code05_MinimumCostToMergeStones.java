@@ -14,6 +14,7 @@ public class Code05_MinimumCostToMergeStones {
 		return process1(0, n - 1, 1, stones, K, presum);
 	}
 
+	// part >= 1
 	// arr[L..R]  一定要弄出part份，返回最低代价
 	// arr、K、presum（前缀累加和数组，求i..j的累加和，就是O(1)了）
 	public static int process1(int L, int R, int part, int[] arr, int K, int[] presum) {

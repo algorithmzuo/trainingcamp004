@@ -27,15 +27,17 @@ public class Code01_RegularExpressionMatch {
 		return isValid(s, e) && process(s, e, 0, 0);
 	}
 
-	// 必须保证ei压中的字符不是*
+	// e[ei....]  能否变成  s[si...]
+	// 重要限制：e[ei]不能压中'*'
 	public static boolean process(char[] s, char[] e, int si, int ei) {
-		if (ei == e.length) { // base case   exp已经耗尽了
+		if (ei == e.length) { // base case   exp已经耗尽了  ""
 			return si == s.length;
 		}
-		
-		// exp[ei]有字符的
+		// si == s.length  没有讨论
+		// exp[ei]有字符的   exp[ei] != "*"
 		// 可能性一，ei+1位置，不是*
 		if (ei + 1 == e.length || e[ei + 1] != '*') {
+			// s[si...]必须有东西  &&   s[si]  e[ei]   && 后续还得能对上
 			return si != s.length 
 					&& (e[ei] == s[si] || e[ei] == '.') 
 					&& process(s, e, si + 1, ei + 1);
@@ -60,6 +62,7 @@ public class Code01_RegularExpressionMatch {
 		if (!isValid(s, e)) {
 			return false;
 		}
+		// initDPMap  做出一张表，而且填好倒数两列，和最后一行
 		boolean[][] dp = initDPMap(s, e);
 		for (int i = s.length - 1; i > -1; i--) {
 			for (int j = e.length - 2; j > -1; j--) {

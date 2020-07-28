@@ -52,13 +52,14 @@ public class Code01_SDEandPM {
 		private int heapsize; // 程序员堆的大小
 
 		public BigQueues(int pmNum) {
-			this.heapsize = 0;
+			heapsize = 0;
 			sdeHeap = new Program[pmNum];
 			indexes = new int[pmNum + 1];
 			for (int i = 0; i <= pmNum; i++) {
 				indexes[i] = -1;
 			}
 			pmQueues = new ArrayList<>();
+			// i  pmQueues.get(i)
 			for (int i = 0; i <= pmNum; i++) {
 				pmQueues.add(new PriorityQueue<Program>(new PmLoveRule()));
 			}
@@ -71,10 +72,10 @@ public class Code01_SDEandPM {
 
 		// 某一个项目加入了，黑盒里
 		public void add(Program program) {
-			PriorityQueue<Program> queue = pmQueues.get(program.pm);
-			queue.add(program);
+			PriorityQueue<Program> pmHeap = pmQueues.get(program.pm);
+			pmHeap.add(program);
 			// 有可能当前的项目，成了此时pm最喜欢的项目，换堆顶，调整sde堆中的项目
-			Program head = queue.peek(); // 现在的堆顶
+			Program head = pmHeap.peek(); // 现在的堆顶
 			// 之前pm在sde堆中的自己的堆顶，sde？
 			int heapindex = indexes[head.pm];
 			if (heapindex == -1) { // 之前没堆顶, 
@@ -167,42 +168,39 @@ public class Code01_SDEandPM {
 
 	public static int[] workFinish(int pms, int sdes, int[][] programs) {
 		// 所有被锁住的项目（3，6，9）   time=0
-		PriorityQueue<Program> startQueue 
-		= new PriorityQueue<Program>(new StartRule());
-		
-		
-		
-		
+		PriorityQueue<Program> startQueue  = new PriorityQueue<Program>(new StartRule());
 		for (int i = 0; i < programs.length; i++) {
 			Program program = new Program(
 					i, programs[i][0], programs[i][1], programs[i][2], programs[i][3]);
 			startQueue.add(program);
 		}
-		
-		
-		
-		PriorityQueue<Integer> sdeWakeQueue = new PriorityQueue<Integer>();
+		// 所有的项目，在最开始的时候，都在start堆中，被锁住
+		//
+		//
+		PriorityQueue<Integer> wakeQueue = new PriorityQueue<Integer>();
 		for (int i = 0; i < sdes; i++) {
-			sdeWakeQueue.add(1);
+			wakeQueue.add(1);
 		}
+		// add   pop   isEmpty
 		BigQueues bigQueues = new BigQueues(pms);
 		int finish = 0; // 目前完成项目的数量
 		int[] ans = new int[programs.length];	
 		while (finish != ans.length) { // 没有得到所有的答案就继续
 			// 最早醒来的程序员的时间, 也是总的推进时间点
-			int sdeWakeTime = sdeWakeQueue.poll(); 
+			int sdeWakeTime = wakeQueue.poll(); 
 			while (!startQueue.isEmpty()) {
 				if (startQueue.peek().start > sdeWakeTime) {
 					break;
 				}
 				bigQueues.add(startQueue.poll());
 			}
+			// 
 			if (bigQueues.isEmpty()) { // 当前时间点并无项目可做
-				sdeWakeQueue.add(startQueue.peek().start);
+				wakeQueue.add(startQueue.peek().start);
 			} else { // 当前时间点有项目可做
 				Program program = bigQueues.pop();
 				ans[program.index] = sdeWakeTime + program.cost;
-				sdeWakeQueue.add(ans[program.index]);
+				wakeQueue.add(ans[program.index]);
 				finish++;
 			}
 		}

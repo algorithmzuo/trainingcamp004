@@ -11,9 +11,6 @@ public class Code04_HanoiProblem {
 
 	// 目标是:  把0~i的圆盘，从from全部挪到to上
 	// 返回，根据arr中的状态arr[0..i]，它是最优解的第几步？
-	
-	
-	
 	// f(i, 3 , 2, 1)    f(i, 1, 3, 2)    f(i, 3, 1, 2)
 	public static int process(int[] arr, int i, int from, int other, int to) {
 		if (i == -1) {
