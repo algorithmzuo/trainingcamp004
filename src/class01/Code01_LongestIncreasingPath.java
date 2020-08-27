@@ -32,7 +32,7 @@ public class Code01_LongestIncreasingPath {
 			left = process(matrix, i, j-1);
 		}
 		if(j+1 < matrix[0].length && matrix[i][j+1] > matrix[i][j]) {
-			right = process(matrix, i-1, j);
+			right = process(matrix, i, j+1);
 		}
 		return 1 + Math.max(Math.max(up, down), Math.max(left, right));
 	}
@@ -83,7 +83,7 @@ public class Code01_LongestIncreasingPath {
 			next3 = process(matrix, i, j-1);
 		}
 		if(j+1 < matrix[0].length && matrix[i][j+1] > matrix[i][j]) {
-			next4 = process(matrix, i-1, j);
+			next4 = process(matrix, i, j+1);
 		}
 		int ans = 1 + Math.max(Math.max(next1, next2), Math.max(next3, next4));
 		dp[i][j] = ans;
