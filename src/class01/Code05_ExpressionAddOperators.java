@@ -129,18 +129,5 @@ public class Code05_ExpressionAddOperators {
 			}
 		}
 	}
-	
-	
-	public static void main(String[] args) {
-		
-		 String num = "105";
-		 int target = 5 ;
-		 
-		 System.out.println(ways(num, target));
-		
-		
-	}
-	
-	
 
 }
