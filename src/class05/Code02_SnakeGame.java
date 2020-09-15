@@ -1,5 +1,7 @@
 package class05;
 
+import java.util.Arrays;
+
 public class Code02_SnakeGame {
 
 	public static int walk1(int[][] matrix) {
@@ -20,15 +22,9 @@ public class Code02_SnakeGame {
 	// 0) 在没有使用过能力的情况下，返回路径最大和，没有可能到达的话，返回负
 	// 1) 在使用过能力的情况下，返回路径最大和，没有可能到达的话，返回负
 	public static int[] process(int[][] m, int i, int j) {
-		
 		if (j == 0) { // (i,j)就是最左侧的位置
 			return new int[] { m[i][j], -m[i][j] };
 		}
-		// j > 0, 
-		// 来到(i,j)位置，一定有之前的路
-		
-
-		// 第一条路   i , j (j > 0)   i,j-1
 		int[] preAns = process(m, i, j - 1);
 		// 所有的路中，完全不使用能力的情况下，能够到达的最好长度是多大
 		int preUnuse = preAns[0];
@@ -67,10 +63,10 @@ public class Code02_SnakeGame {
 		for (int i = 0; i < dp.length; i++) {
 			dp[i][0][0] = matrix[i][0];
 			dp[i][0][1] = -matrix[i][0];
-			max = Math.max(dp[i][0][0], dp[i][0][1]);
+			max = Math.max(max, Math.max(dp[i][0][0], dp[i][0][1]));
 		}
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 1; j < matrix[0].length; j++) {
+		for (int j = 1; j < matrix[0].length; j++) {
+			for (int i = 0; i < matrix.length; i++) {
 				int preUnuse = dp[i][j - 1][0];
 				int preUse = dp[i][j - 1][1];
 				if (i - 1 >= 0) {
@@ -96,19 +92,31 @@ public class Code02_SnakeGame {
 		return max;
 	}
 
-	public static String getString(int num) {
-		String str = String.valueOf(num);
-		if (str.length() == 1) {
-			return " " + str;
+	public static int[][] generateRandomArray(int row, int col, int value) {
+		int[][] arr = new int[(int) (Math.random() * row) + 1][(int) (Math.random() * col) + 1];
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = 0; j < arr[0].length; j++) {
+				arr[i][j] = (int) (Math.random() * value) * (Math.random() > 0.5 ? -1 : 1);
+			}
 		}
-		return str;
+		return arr;
 	}
 
 	public static void main(String[] args) {
-		int[][] matrix = { { -100, -4000, -10000 }, { -200, -2000, -100000 }, { -300, -1000, -60000 },
-				{ -2000, -5000, -20000000 } };
-		System.out.println(walk1(matrix));
-		System.out.println(walk2(matrix));
+		int times = 1000000;
+		for (int i = 0; i < times; i++) {
+			int[][] matrix = generateRandomArray(5, 5, 10);
+			int ans1 = walk1(matrix);
+			int ans2 = walk2(matrix);
+			if (ans1 != ans2) {
+				for (int j = 0; j < matrix.length; j++) {
+					System.out.println(Arrays.toString(matrix[j]));
+				}
+				System.out.println("Oops   ans1: " + ans1 + "   ans2:" + ans2);
+				break;
+			}
+		}
+		System.out.println("finish");
 	}
 
 }
