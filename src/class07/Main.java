@@ -28,7 +28,7 @@ public class Main {
 			// 注意这一句！一定要加这一句，因为牛客的数据有问题
 			pm = Math.max(programs[i][0], pm);
 		}
-		// workFinish方法就是我们课上讲的
+		// workFinish方法就是我们课上讲的，一点也没改！
 		int[] ans = workFinish(pm, sde, programs);
 		for (int i = 0; i < N; i++) {
 			System.out.println(ans[i]);
