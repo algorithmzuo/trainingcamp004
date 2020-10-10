@@ -22,6 +22,11 @@ public class Code04_DistinctSubsequences {
 		return res;
 	}
 
+	// S[...i]的所有子序列中，包含多少个字面值等于T[...j]这个字符串的子序列
+	// 记为dp[i][j]
+	// 可能性1）S[...i]的所有子序列中，都不以s[i]结尾，则dp[i][j]肯定包含dp[i-1][j]
+	// 可能性2）S[...i]的所有子序列中，都必须以s[i]结尾，
+	// 这要求S[i] == T[j]，则dp[i][j]包含dp[i-1][j-1]
 	public static int numDistinct2(String S, String T) {
 		char[] s = S.toCharArray();
 		char[] t = T.toCharArray();
