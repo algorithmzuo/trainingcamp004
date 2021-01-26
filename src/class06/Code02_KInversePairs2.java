@@ -10,15 +10,12 @@ public class Code02_KInversePairs2 {
 			return 1;
 		}
 		int[][] dp = new int[N + 1][K + 1];
-		// dp[0][...] 不要
-		dp[1][0] = 1;// dp[1][1...] 0
+		dp[1][0] = 1;
 		for (int i = 2; i <= N; i++) {
 			dp[i][0] = 1;
 		}
 		for (int i = 2; i <= N; i++) {
 			for (int j = 1; j <= K; j++) {
-				// dp[i][j] i > j dp[i-1][j...0]
-				// dp[i][j] i >= j dp[i-1][j....j-i+1]
 				for (int s = j; s >= Math.max(0, j - i + 1); s--) {
 					dp[i][j] += dp[i - 1][s];
 				}
