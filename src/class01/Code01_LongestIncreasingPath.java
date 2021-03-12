@@ -64,16 +64,16 @@ public class Code01_LongestIncreasingPath {
 		int next3 = 0;
 		int next4 = 0;
 		if (i - 1 >= 0 && matrix[i - 1][j] > matrix[i][j]) {
-			next1 = process(matrix, i - 1, j);
+			next1 = process(matrix, i - 1, j, dp);
 		}
 		if (i + 1 < matrix.length && matrix[i + 1][j] > matrix[i][j]) {
-			next2 = process(matrix, i + 1, j);
+			next2 = process(matrix, i + 1, j, dp);
 		}
 		if (j - 1 >= 0 && matrix[i][j - 1] > matrix[i][j]) {
-			next3 = process(matrix, i, j - 1);
+			next3 = process(matrix, i, j - 1, dp);
 		}
 		if (j + 1 < matrix[0].length && matrix[i][j + 1] > matrix[i][j]) {
-			next4 = process(matrix, i, j + 1);
+			next4 = process(matrix, i, j + 1, dp);
 		}
 		int ans = 1 + Math.max(Math.max(next1, next2), Math.max(next3, next4));
 		dp[i][j] = ans;
